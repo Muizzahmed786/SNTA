@@ -8,32 +8,46 @@ const PATIENT_LINKS: { href: string; icon: AppIconName; label: string }[] = [
   { href: 'home', icon: 'home', label: 'Home' },
   { href: 'games', icon: 'games', label: 'Games' },
   { href: 'day', icon: 'calendar', label: 'My day' },
-  { href: 'memories', icon: 'family', label: 'Family' },
+  { href: 'memories', icon: 'family', label: 'Memories' },
   { href: 'help', icon: 'call', label: 'Help' },
+]
+
+const CARE_LINKS: { href: string; icon: AppIconName; label: string }[] = [
+  { href: 'care', icon: 'home', label: 'Overview' },
+  { href: 'care-routine', icon: 'calendar', label: 'Routine' },
+  { href: 'care-notes', icon: 'message', label: 'Mood & notes' },
+  { href: 'progress', icon: 'star', label: 'Activity' },
+  { href: 'care-memories', icon: 'camera', label: 'Memories' },
+  { href: 'report', icon: 'text', label: 'Care report' },
+  { href: 'learn', icon: 'brain', label: 'Guidance' },
+  { href: 'care-settings', icon: 'shapes', label: 'Settings' },
 ]
 
 function BrandMark() {
   return (
-    <svg viewBox="0 0 40 40" aria-hidden="true">
-      <rect width="40" height="40" rx="12" style={{ fill: 'var(--accent)' }} />
-      <circle
-        cx="15"
-        cy="20"
-        r="7.5"
-        fill="none"
-        style={{ stroke: 'var(--accent-ink)' }}
-        strokeWidth="3"
+    <svg className="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+      <path
+        d="M24 5c8 5 13 11 13 19S32 38 24 43c-8-5-13-11-13-19S16 10 24 5Z"
+        fill="currentColor"
       />
-      <circle
-        cx="25"
-        cy="20"
-        r="7.5"
-        fill="none"
-        style={{ stroke: 'var(--accent-ink)' }}
-        strokeWidth="3"
-        opacity=".7"
+      <path
+        d="M24 12c-4.7 3.2-7.5 7.2-7.5 12s2.8 8.8 7.5 12c4.7-3.2 7.5-7.2 7.5-12S28.7 15.2 24 12Z"
+        fill="var(--brand-cutout)"
       />
+      <path d="M24 13v22" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
+  )
+}
+
+function Brand({ caregiver }: { caregiver: boolean }) {
+  return (
+    <a className="brand" href={caregiver ? '#care' : '#home'} aria-label="SNTA home">
+      <BrandMark />
+      <span className="brand-copy">
+        <b>SNTA</b>
+        <small>{caregiver ? 'Care companion' : 'A familiar place, every day'}</small>
+      </span>
+    </a>
   )
 }
 
@@ -61,140 +75,130 @@ export function AppShell({ route, children }: { route: string; children: ReactNo
   }
 
   useThemeEffect(state.settings, state.mode)
-  const routeLabel = getRouteLabel(route, caregiver)
 
   return (
     <div className={`app app--${state.mode}`}>
       <a className="skip" href="#main">
         Skip to content
       </a>
-      <header className="top">
-        <div className="wrap top-in">
-          <a className="brand" href={caregiver ? '#care' : '#home'}>
-            <BrandMark />
-            <span>
-              <b>SNTA</b>
-              {caregiver ? (
-                <small>Remember More. Connect More. Live Better.</small>
-              ) : (
-                <small className="patient-status">
-                  <i aria-hidden="true" /> Offline and private
-                </small>
-              )}
-            </span>
-          </a>
-          <div className="top-right">
-            <button
-              className="theme-toggle"
-              type="button"
-              aria-label={`Switch to ${state.settings.theme === 'light' ? 'dark' : 'light'} mode`}
-              aria-pressed={state.settings.theme === 'dark'}
-              onClick={toggleTheme}
-            >
-              <AppIcon name={state.settings.theme === 'light' ? 'moon' : 'sun'} size={18} />
-              <span>{state.settings.theme === 'light' ? 'Dark' : 'Light'}</span>
-            </button>
-            <div className="mode" role="group" aria-label="Choose view">
-              <button
-                type="button"
-                aria-pressed={!caregiver}
-                onClick={() => {
-                  changeMode('patient')
-                }}
-              >
-                Patient
-              </button>
-              <button
-                type="button"
-                aria-pressed={caregiver}
-                onClick={() => {
-                  changeMode('caregiver')
-                }}
-              >
-                Caregiver
-              </button>
+      {caregiver ? (
+        <div className="care-shell">
+          <aside className="care-rail">
+            <Brand caregiver />
+            <div className="care-person">
+              <span className="care-person__avatar" aria-hidden="true">
+                {state.settings.name.trim()[0] || 'A'}
+              </span>
+              <span>
+                <small>Supporting</small>
+                <strong>{state.settings.name}</strong>
+              </span>
             </div>
-            {caregiver && (
-              <a className="help-btn" href="#help">
-                <AppIcon name="call" size={18} />
-                Help
-              </a>
-            )}
-          </div>
-        </div>
-        {caregiver && (
-          <nav className="cnav" aria-label="Caregiver sections">
-            <div className="wrap">
-              {[
-                ['care', 'Overview'],
-                ['care-routine', 'Routine'],
-                ['care-notes', 'Mood & notes'],
-                ['progress', 'Activity'],
-                ['care-memories', 'Memories'],
-                ['report', 'Care report'],
-                ['learn', 'Learn'],
-                ['care-settings', 'Settings'],
-              ].map(([href, label]) => {
-                return (
+            <nav className="care-nav" aria-label="Caregiver sections">
+              {CARE_LINKS.map(({ href, icon, label }) => (
+                <a key={href} href={`#${href}`} aria-current={route === href ? 'page' : undefined}>
+                  <AppIcon name={icon} size={20} />
+                  <span>{label}</span>
+                </a>
+              ))}
+            </nav>
+            <div className="care-rail__footer">
+              <button className="view-switch" type="button" onClick={() => changeMode('patient')}>
+                <AppIcon name="arrow-left" size={18} />
+                Open patient view
+              </button>
+              <span className="privacy-note">
+                <i aria-hidden="true" /> Stored privately on this device
+              </span>
+            </div>
+          </aside>
+          <div className="care-canvas">
+            <header className="care-topbar">
+              <Brand caregiver />
+              <nav className="care-mobile-nav" aria-label="Caregiver sections">
+                {CARE_LINKS.slice(0, 6).map(({ href, icon, label }) => (
                   <a
                     key={href}
                     href={`#${href}`}
                     aria-current={route === href ? 'page' : undefined}
                   >
+                    <AppIcon name={icon} size={18} />
                     {label}
                   </a>
-                )
-              })}
-            </div>
-          </nav>
-        )}
-        {caregiver && (
-          <div className="system-strip">
-            <div className="wrap">
-              <span>
-                <i aria-hidden="true" /> Offline companion
-              </span>
-              <span>{routeLabel}</span>
-              <span>Private on this device</span>
-            </div>
+                ))}
+              </nav>
+              <div className="top-actions">
+                <button
+                  className="icon-button"
+                  type="button"
+                  onClick={toggleTheme}
+                  aria-label="Toggle colour theme"
+                >
+                  <AppIcon name={state.settings.theme === 'light' ? 'moon' : 'sun'} size={20} />
+                </button>
+                <a className="help-chip" href="#help">
+                  <AppIcon name="call" size={18} /> Help
+                </a>
+              </div>
+            </header>
+            <main
+              id="main"
+              className={`page page--${route.replace(/[^a-z0-9-]/g, '')}`}
+              tabIndex={-1}
+            >
+              {children}
+            </main>
           </div>
-        )}
-      </header>
-      <main
-        id="main"
-        className={`wrap page page--${route.replace(/[^a-z0-9-]/g, '')}`}
-        tabIndex={-1}
-      >
-        {children}
-      </main>
-      {!caregiver && (
-        <nav className="bnav patient-nav" aria-label="Main menu">
-          <div className="wrap">
-            {PATIENT_LINKS.map(({ href, icon, label }) => {
-              return (
+        </div>
+      ) : (
+        <>
+          <header className="patient-top">
+            <div className="wrap patient-top__in">
+              <Brand caregiver={false} />
+              <div className="top-actions">
+                <span className="patient-status">
+                  <i aria-hidden="true" /> Private & offline
+                </span>
+                <button
+                  className="icon-button"
+                  type="button"
+                  onClick={toggleTheme}
+                  aria-label="Toggle colour theme"
+                >
+                  <AppIcon name={state.settings.theme === 'light' ? 'moon' : 'sun'} size={22} />
+                </button>
+                <button
+                  className="caregiver-entry"
+                  type="button"
+                  onClick={() => changeMode('caregiver')}
+                >
+                  Caregiver view
+                  <AppIcon name="arrow-right" size={18} />
+                </button>
+              </div>
+            </div>
+          </header>
+          <main
+            id="main"
+            className={`wrap page page--${route.replace(/[^a-z0-9-]/g, '')}`}
+            tabIndex={-1}
+          >
+            {children}
+          </main>
+          <nav className="patient-nav" aria-label="Main menu">
+            <div>
+              {PATIENT_LINKS.map(({ href, icon, label }) => (
                 <a key={href} href={`#${href}`} aria-current={route === href ? 'page' : undefined}>
                   <AppIcon name={icon} size={24} />
-                  {label}
+                  <span>{label}</span>
                 </a>
-              )
-            })}
-          </div>
-        </nav>
+              ))}
+            </div>
+          </nav>
+        </>
       )}
     </div>
   )
-}
-
-function getRouteLabel(route: string, caregiver: boolean) {
-  if (route.startsWith('play-') || route.startsWith('board-')) {
-    return 'Cognitive activity'
-  }
-
-  if (caregiver) {
-    return 'Care workspace'
-  }
-
-  return 'Daily companion'
 }
 
 function useThemeEffect(

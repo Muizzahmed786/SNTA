@@ -5,7 +5,7 @@ export function LearnPage() {
     <>
       <PageHeader
         title="Learn"
-        eyebrow="07 · Guidance"
+        eyebrow="Helpful guidance"
         description="Practical, general information for people living with dementia and their caregivers."
         back={{ href: 'home', label: 'Back' }}
       />

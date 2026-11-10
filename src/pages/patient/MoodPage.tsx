@@ -17,7 +17,7 @@ export function MoodPage() {
     <>
       <PageHeader
         title={`How are you feeling, ${state.settings.name}?`}
-        eyebrow="04 · Mood check-in"
+        eyebrow="Mood check-in"
         description="Choose the face that feels most like you right now."
         back={{ href: 'home', label: 'Home' }}
       />

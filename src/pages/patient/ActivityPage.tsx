@@ -19,7 +19,7 @@ export function ActivityPage() {
     <>
       <PageHeader
         title="What I have done"
-        eyebrow="05 · Activity history"
+        eyebrow="This week"
         description="A gentle look back at the games and activities completed this week."
         back={{ href: 'home', label: 'Home' }}
       />

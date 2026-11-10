@@ -82,7 +82,7 @@ export function HomePage() {
       <section className="home-section">
         <div className="section-h">
           <div>
-            <span className="section-code">01 · Cognitive activities</span>
+            <span className="section-code">Activities</span>
             <h2>Games for today</h2>
           </div>
           <a className="btn" href="#games">
@@ -101,7 +101,7 @@ export function HomePage() {
       <section className="home-section">
         <div className="section-h">
           <div>
-            <span className="section-code">02 · Shared moments</span>
+            <span className="section-code">Time together</span>
             <h2>Play with family</h2>
           </div>
         </div>
@@ -114,7 +114,7 @@ export function HomePage() {
       <section className="home-section">
         <div className="section-h">
           <div>
-            <span className="section-code">03 · Everyday support</span>
+            <span className="section-code">Everyday support</span>
             <h2>More ways to feel supported</h2>
           </div>
         </div>

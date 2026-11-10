@@ -34,7 +34,7 @@ export function MemoriesPage() {
     <>
       <PageHeader
         title="Family & memories"
-        eyebrow="03 · Familiar connections"
+        eyebrow="People and stories"
         description="Reconnect with the people, places and stories that matter most."
         back={{ href: 'home', label: 'Home' }}
       />

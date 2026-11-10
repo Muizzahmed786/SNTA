@@ -6,7 +6,7 @@ export function GamesPage() {
     <>
       <PageHeader
         title="Games"
-        eyebrow="01 · Cognitive activities"
+        eyebrow="Activities"
         description="Pick any activity. Take your time—there is no wrong way to play."
       />
       <div className="section-h">

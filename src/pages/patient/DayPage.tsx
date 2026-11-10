@@ -17,7 +17,7 @@ export function DayPage() {
     <>
       <PageHeader
         title="My day"
-        eyebrow="02 · Daily orientation"
+        eyebrow="Today"
         description={`${formatDate(new Date())} · ${completedCount} of ${list.length} activities completed`}
         back={{ href: 'home', label: 'Home' }}
       />

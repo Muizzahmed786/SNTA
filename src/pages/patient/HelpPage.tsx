@@ -14,7 +14,7 @@ export function HelpPage() {
     <>
       <PageHeader
         title="Help"
-        eyebrow="06 · Immediate support"
+        eyebrow="Immediate support"
         description="Important contacts and medical information, kept clear and easy to reach."
         back={{ href: state.mode === 'caregiver' ? 'care' : 'home', label: 'Back' }}
       />
